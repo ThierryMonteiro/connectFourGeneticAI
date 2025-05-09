@@ -58,16 +58,14 @@ def utility(state):
     if ended:
         return 1 if winner == 1 else (-1 if winner == 2 else 0)
 
-    # Heuristic: Check if Player 1 can win next move
-    for col in range(state.largura):
-        if col in state.actions():
-            new_state = copy.deepcopy(state)
-            new_state.jogada(col)
-            _, winner = new_state.hasEnded()
-            if winner == 1:
-                return 0.9  # Almost a win for Player 1 (high threat)
-            if winner == 2:
-                return -0.9  # Almost a win for Player 2 (opportunity)
+    for col in state.actions():
+        new_state = copy.deepcopy(state)
+        new_state.jogada(col)
+        _, winner = new_state.hasEnded()
+        if winner == 1:
+            return 0.9  # Almost a win for Player 1 (high threat)
+        if winner == 2:
+            return -0.9  # Almost a win for Player 2 (opportunity)
 
     return random.random()
 
@@ -75,8 +73,8 @@ def minmax(state, depth, maximizing_player):
 
     ended, winner = state.hasEnded()
     if ended or depth == 0:
-        if depth == 0:
-            print("acabou a proofundiadade")
+        #if depth == 0:
+            #print("acabou a proofundiadade")
         return utility(state)
 
     if not state.actions():
@@ -90,7 +88,7 @@ def minmax(state, depth, maximizing_player):
             eval = minmax(state.jogada(action), depth - 1, False)
             max_eval = max(max_eval, eval)
 
-        print(f"Maximizing Player - Depth {depth}: {max_eval}")
+        #print(f"Maximizing Player - Depth {depth}: {max_eval}")
         return max_eval
     else:
         min_eval = float('inf')
@@ -99,7 +97,7 @@ def minmax(state, depth, maximizing_player):
             state = copy.deepcopy(state)
             eval = minmax(state.jogada(action), depth - 1, True)
             min_eval = min(min_eval, eval)
-        print(f"Maximizing Player - Depth {depth}: {min_eval}")
+        #print(f"Maximizing Player - Depth {depth}: {min_eval}")
 
         return min_eval
 
@@ -120,5 +118,5 @@ def best_move(state, depth):
 
     return best_action
 
-gameLoopIAs(Jogo(6,7),15)
+gameLoopIAs(Jogo(5,5),8)
 
