@@ -26,9 +26,8 @@ def gameLoopDoisHumanos(jogo):
             break
 
 def gameLoopIAs(jogo, depth):
-    jogo.imprimeTabuleiro()
     while True:
-        print("Vez do jogador 1")
+        # print("Vez do jogador 1")
         jogo.jogada(best_move(jogo,depth))
         ended, winner = jogo.hasEnded()
         if ended:
@@ -37,11 +36,10 @@ def gameLoopIAs(jogo, depth):
             else:
                 print("Ganhador!")
                 print(winner)
+                jogo.imprimeTabuleiro()
             break
-        jogo.imprimeTabuleiro()
-        print("Vez do jogador 2")
+        # print("Vez do jogador 2")
         jogo.jogada(best_move(jogo,depth))
-        jogo.imprimeTabuleiro()
         ended, winner = jogo.hasEnded()
         if ended:
             if winner == 0:
@@ -49,8 +47,8 @@ def gameLoopIAs(jogo, depth):
             else:
                 print("Ganhador!")
                 print(winner)
+                jogo.imprimeTabuleiro()
             break
-    jogo.imprimeTabuleiro()
 
 
 def utility(state):
@@ -71,12 +69,11 @@ def utility(state):
 
     return random.random()
 
-def minmax(state, depth, maximizing_player):
-
+def minmax(state, depth, maximizing_player, alpha =-float('inf'), beta = float('inf')):
+    new_state = copy.deepcopy(state)
     ended, winner = state.hasEnded()
     if ended or depth == 0:
-        if depth == 0:
-            print("acabou a proofundiadade")
+        #print Acabou o jogo ou a profundidade
         return utility(state)
 
     if not state.actions():
@@ -85,21 +82,25 @@ def minmax(state, depth, maximizing_player):
 
     if maximizing_player:
         max_eval = -float('inf')
-        for action in state.actions():
-            state = copy.deepcopy(state)
-            eval = minmax(state.jogada(action), depth - 1, False)
+        for action in new_state.actions():
+            eval = minmax(new_state.jogada(action), depth - 1, False, alpha, beta)
             max_eval = max(max_eval, eval)
+            alpha = max(alpha, eval)
+            if beta <= alpha:
+                break
 
-        print(f"Maximizing Player - Depth {depth}: {max_eval}")
+        # print(f"Maximizing Player - Depth {depth}: {max_eval}")
         return max_eval
     else:
         min_eval = float('inf')
 
-        for action in state.actions():
-            state = copy.deepcopy(state)
-            eval = minmax(state.jogada(action), depth - 1, True)
+        for action in new_state.actions():
+            eval = minmax(new_state.jogada(action), depth - 1, True, alpha, beta)
             min_eval = min(min_eval, eval)
-        print(f"Maximizing Player - Depth {depth}: {min_eval}")
+            beta = min(beta, eval)
+            if beta <= alpha:
+                break
+        # print(f"Maximizing Player - Depth {depth}: {min_eval}")
 
         return min_eval
 
@@ -120,5 +121,4 @@ def best_move(state, depth):
 
     return best_action
 
-gameLoopIAs(Jogo(6,7),15)
-
+gameLoopIAs(Jogo(5,5), 4)
