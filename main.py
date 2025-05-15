@@ -6,6 +6,11 @@ from jogo import Jogo
 
 import copy
 
+from ag import *
+from minmax import avaliacao_personalizada
+from jogo import Jogo
+
+
 # Tabuleiro é impresso no seu estado atual
 # jogo inicia com o jogador 1, cujas peças são representadas por 1
 
@@ -121,4 +126,13 @@ def best_move(state, depth):
 
     return best_action
 
-gameLoopIAs(Jogo(5,5), 4)
+# gameLoopIAs(Jogo(5,5), 4)
+if __name__ == "__main__":
+    
+    melhor_individuo = algoritmo_genetico(
+        num_geracoes=10,
+        tamanho_populacao=30,
+        taxa_crossover=0.8,
+        taxa_mutacao=0.5
+    )
+    print("Melhor conjunto de pesos encontrado:", melhor_individuo)
