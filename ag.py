@@ -16,6 +16,10 @@ def avaliar_populacao_torneio(populacao):
 ##### multiprocessing #####
 ###########################
 
+def gerar_individuo_base(weight_range=(0.4, 0.7)):
+    return [random.uniform(*weight_range) for _ in range(3)]
+
+
 def fitness_torneio(individuo, populacao, n=10):
     vitorias = 0
     oponentes = random.sample(populacao, min(n, len(populacao)))
@@ -50,40 +54,34 @@ def simula_jogo(jogo, pesos_agente1, pesos_agente2, profundidade=3):
         if fim:
             return vencedor
 
-def crossover_uniforme(pai1, pai2, taxa_crossover):
-    if random.random() > taxa_crossover:
-        return pai1[:]  # sem crossover
-    filho = []
-    for w1, w2 in zip(pai1, pai2):
-        filho.append(random.choice([w1, w2]))
-    return filho
+def crossover_uniforme(pai1, pai2, taxa_crossover=1.0):
+    return [
+        random.choice([w1, w2]) if random.random() < taxa_crossover else w1
+        for w1, w2 in zip(pai1, pai2)
+    ]
 
 def mutacao(individuo, taxa_mutacao):
-    import random
     return [
-        w + random.uniform(-1.5, 1.5) if random.random() < taxa_mutacao else w
+        max(0.0, w + random.uniform(0.1 * w, 0.5 * w)) if random.random() < taxa_mutacao else w
         for w in individuo
     ]
 
 def selecao_por_torneio(populacao, fitnesses, k=3):
-    import random
     selecionados = random.sample(list(zip(populacao, fitnesses)), k)
     selecionados.sort(key=lambda x: x[1], reverse=True)
     return selecionados[0][0]  # retorna o indivíduo com maior fitness
 
 
-def algoritmo_genetico(num_geracoes, tamanho_populacao, taxa_crossover, taxa_mutacao):
-    import random
-
+def algoritmo_genetico(num_geracoes, tamanho_populacao, taxa_crossover, taxa_mutacao, range_pesos):
     # população inicial
-    populacao = [[random.uniform(-2, 2) for _ in range(3)] for _ in range(tamanho_populacao)]
-    print(populacao)
+    populacao = [gerar_individuo_base(range_pesos) for _ in range(tamanho_populacao)]
 
     historico = []
 
     for gen in range(num_geracoes):
         fitnesses = avaliar_populacao_torneio(populacao)
-        nova_pop = []
+        elite = populacao[fitnesses.index(max(fitnesses))]
+        nova_pop = [elite]  # mantém o melhor da geração anterior
 
         while len(nova_pop) < tamanho_populacao:
             pai1 = selecao_por_torneio(populacao, fitnesses, 2)
