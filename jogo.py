@@ -108,10 +108,7 @@ class Jogo():
         return False, None
 
     def actions(self):
-        actions = []
-        for i in range(len(self.estado)):
-            if self.estado[0][i] == 0:
-                actions.append(i)
-        return actions
+        return [i for i in range(self.largura) if self.estado[0][i] == 0]
+
 
 
