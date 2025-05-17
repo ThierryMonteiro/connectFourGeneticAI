@@ -63,7 +63,7 @@ class Jogo():
                     self.estado[self.ultimaJogada[0]][i+1] == verificaJogador and \
                     self.estado[self.ultimaJogada[0]][i+2] == verificaJogador and \
                     self.estado[self.ultimaJogada[0]][i+3] == verificaJogador:
-               # print("Jogador " + str(verificaJogador) + " ganhou fazendo uma jogada na coluna " + str(self.ultimaJogada[1]))
+                # print("Jogador " + str(verificaJogador) + " ganhou fazendo uma jogada na coluna " + str(self.ultimaJogada[1]))
                 return True, verificaJogador
 
         # Verifica na vertical
@@ -72,7 +72,7 @@ class Jogo():
                     self.estado[i+1][self.ultimaJogada[1]] == verificaJogador and \
                     self.estado[i+2][self.ultimaJogada[1]] == verificaJogador and \
                     self.estado[i+3][self.ultimaJogada[1]] == verificaJogador:
-                #print("Jogador " + str(verificaJogador) + " ganhou fazendo uma jogada na coluna " + str(self.ultimaJogada[1]))
+                # print("Jogador " + str(verificaJogador) + " ganhou fazendo uma jogada na coluna " + str(self.ultimaJogada[1]))
                 return True,verificaJogador
 
 
@@ -83,8 +83,8 @@ class Jogo():
                         self.estado[i+1][j+1] == verificaJogador and \
                         self.estado[i+2][j+2] == verificaJogador and \
                         self.estado[i+3][j+3] == verificaJogador:
-                    #print("Jogador " + str(verificaJogador) + " ganhou fazendo uma jogada na coluna " + str(
-                      #  self.ultimaJogada[1]))
+                    # print("Jogador " + str(verificaJogador) + " ganhou fazendo uma jogada na coluna " + str(
+                    #    self.ultimaJogada[1]))
                     return True,verificaJogador
 
         # Verifica na diagonal secundária
@@ -95,7 +95,7 @@ class Jogo():
                         self.estado[i-1][j+1] == verificaJogador and \
                         self.estado[i-2][j+2] == verificaJogador and \
                         self.estado[i-3][j+3] == verificaJogador:
-                    #print("Jogador " + str(verificaJogador) + " ganhou fazendo uma jogada na coluna " + str(
+                    # print("Jogador " + str(verificaJogador) + " ganhou fazendo uma jogada na coluna " + str(
                     #    self.ultimaJogada[1]))
                     return True,verificaJogador
 
@@ -108,10 +108,7 @@ class Jogo():
         return False, None
 
     def actions(self):
-        actions = []
-        for i in range(len(self.estado)):
-            if self.estado[0][i] == 0:
-                actions.append(i)
-        return actions
+        return [i for i in range(self.largura) if self.estado[0][i] == 0]
+
 
 
