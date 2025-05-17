@@ -106,4 +106,4 @@ def algoritmo_genetico(num_geracoes, tamanho_populacao, taxa_crossover, taxa_mut
         historico.append(melhor)
 
     # Retorna o melhor indivíduo encontrado em toda a execução
-    return melhor_geral
+    return melhor_geral, historico
