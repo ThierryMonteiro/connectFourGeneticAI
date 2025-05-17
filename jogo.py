@@ -53,6 +53,9 @@ class Jogo():
 
     def hasEnded(self):
 
+        if self.ultimaJogada is None:
+            return False, None  # Jogo não terminou porque não houve jogadas
+
         # Verifica se há 4 peças em linha, baseadas na última jogada
 
         verificaJogador = 2 if self.jogador == 1 else 1
