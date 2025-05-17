@@ -2,9 +2,10 @@ from ag import *
 import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
+    random.seed(43)
     melhor_individuo, historico = algoritmo_genetico(
         num_geracoes=20,
-        tamanho_populacao=15,
+        tamanho_populacao=20,
         taxa_crossover=0.8,
         taxa_mutacao=0.1,
         range_pesos=(-1,1)
